@@ -1,0 +1,17 @@
+
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+db = SQLAlchemy()
+
+class ViewingRequest(db.Model):
+    __tablename__ = 'viewing_requests'
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    property_id = db.Column(db.Integer, db.ForeignKey('properties.id'))
+    scheduled_at = db.Column(db.DateTime)
+    status = db.Column(db.Enum('pending', 'confirmed', 'cancelled', name='viewing_status'))
+    notes = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
