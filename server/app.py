@@ -1,0 +1,36 @@
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
+from models.user import db, bcrypt
+from config import Config
+
+from controllers.auth_controller import auth_bp
+from controllers.property_controller import property_bp
+from controllers.media_controller import media_bp
+from controllers.inquiry_controller import inquiry_bp
+from controllers.viewing_controller import viewing_bp
+from controllers.application_controller import application_bp
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    bcrypt.init_app(app)
+    jwt = JWTManager(app)
+    migrate = Migrate(app, db)
+
+    # Register Blueprints
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(property_bp)
+    app.register_blueprint(media_bp)
+    app.register_blueprint(inquiry_bp)
+    app.register_blueprint(viewing_bp)
+    app.register_blueprint(application_bp)
+
+    return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True)
