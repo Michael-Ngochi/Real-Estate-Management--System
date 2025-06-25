@@ -4,6 +4,15 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from models.user import db, bcrypt
 from config import Config
+from models import db, bcrypt
+
+import models
+from models.property import Property
+from models.property_media import PropertyMedia
+from models.inquiry import Inquiry
+from models.viewing_request import ViewingRequest
+from models.application import Application
+
 
 from controllers.auth_controller import auth_bp
 from controllers.property_controller import property_bp
