@@ -1,4 +1,3 @@
-
 from datetime import datetime, timedelta
 from models.user import User, db, bcrypt
 from models.property import Property
@@ -15,19 +14,19 @@ with app.app_context():
     db.create_all()
 
     # --- Create Users ---
-    admin = User(name="Admin One", email="admin@nyumbasmart.co.ke", role="admin", phone="0712345678")
+    admin = User(name="Admin One", email="admin@nyumbasmart.co.ke", role="admin", phone="+254712345678")
     admin.set_password("adminpass")
 
-    agent1 = User(name="Wanjiku Mwangi", email="wanjiku@agency.co.ke", role="agent", phone="0722111000")
+    agent1 = User(name="Wanjiku Mwangi", email="wanjiku@agency.co.ke", role="agent", phone="+254722111000")
     agent1.set_password("agentpass")
 
-    agent2 = User(name="Otieno Owino", email="otieno@agency.co.ke", role="agent", phone="0711999888")
+    agent2 = User(name="Otieno Owino", email="otieno@agency.co.ke", role="agent", phone="+254711999888")
     agent2.set_password("agentpass")
 
-    client1 = User(name="Brian Kipkoech", email="brian@client.co.ke", role="client", phone="0700111222")
+    client1 = User(name="Brian Kipkoech", email="brian@client.co.ke", role="client", phone="+254700111222")
     client1.set_password("clientpass")
 
-    client2 = User(name="Amina Noor", email="amina@client.co.ke", role="client", phone="0799887766")
+    client2 = User(name="Amina Noor", email="amina@client.co.ke", role="client", phone="+254799887766")
     client2.set_password("clientpass")
 
     db.session.add_all([admin, agent1, agent2, client1, client2])
@@ -37,7 +36,10 @@ with app.app_context():
     prop1 = Property(
         title="3 Bedroom Apartment in Kilimani",
         description="Spacious apartment with parking and security.",
-        location="Kilimani, Nairobi",
+        location="Menelik Road",
+        county="Nairobi",
+        town="Kilimani",
+        geo_coordinates="-1.3008,36.7845",
         price=9500000,
         property_type="apartment",
         bedrooms=3,
@@ -50,7 +52,10 @@ with app.app_context():
     prop2 = Property(
         title="Serviced Plot in Riat Hills",
         description="50x100 plot with access road and water.",
-        location="Riat Hills, Kisumu",
+        location="Riat Access Road",
+        county="Kisumu",
+        town="Riat Hills",
+        geo_coordinates="-0.0987,34.7593",
         price=1250000,
         property_type="land",
         bedrooms=0,
@@ -97,4 +102,4 @@ with app.app_context():
     db.session.add(app1)
     db.session.commit()
 
-    print("✅ Seed data inserted successfully.")
+    print("Seed data inserted successfully.")
