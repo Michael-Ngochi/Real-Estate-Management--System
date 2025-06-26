@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from models.user import db, bcrypt
 from config import Config
 from models import db, bcrypt
+from flask_cors import CORS
 
 import models
 from models.property import Property
@@ -22,8 +23,12 @@ from controllers.viewing_controller import viewing_bp
 from controllers.application_controller import application_bp
 
 def create_app():
+    
     app = Flask(__name__)
+    
     app.config.from_object(Config)
+
+    CORS(app, resources={r"/*": {"origins": ["https://nyumbasmart.onrender.com"]}}, supports_credentials=True)
 
     db.init_app(app)
     bcrypt.init_app(app)
@@ -37,6 +42,8 @@ def create_app():
     app.register_blueprint(inquiry_bp)
     app.register_blueprint(viewing_bp)
     app.register_blueprint(application_bp)
+    
+
 
     return app
 

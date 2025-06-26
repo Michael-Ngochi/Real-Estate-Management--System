@@ -36,3 +36,6 @@ htmlcov/
 
 # Jupyter (if you happen to run any notebooks for testing)
 .ipynb_checkpoints/
+
+#node
+node_modules/
