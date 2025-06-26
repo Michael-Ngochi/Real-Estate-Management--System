@@ -1,8 +1,9 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from .user import db
 
-db = SQLAlchemy()
+
 
 class PropertyMedia(db.Model):
     __tablename__ = 'property_media'

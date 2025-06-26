@@ -1,8 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from .user import User
+from .user import User,db
 
-db = SQLAlchemy()
 
 class Property(db.Model):
     __tablename__ = 'properties'
@@ -10,6 +9,9 @@ class Property(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
+    geo_coordinates = db.Column(db.String(50))
+    county = db.Column(db.String(100))
+    town = db.Column(db.String(100))
     location = db.Column(db.String(200))
     price = db.Column(db.Numeric, nullable=False)
     property_type = db.Column(db.String(50))

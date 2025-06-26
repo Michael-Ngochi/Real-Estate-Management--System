@@ -1,8 +1,7 @@
-
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
-db = SQLAlchemy()
+from .user import db
+from sqlalchemy.orm import relationship
 
 class Inquiry(db.Model):
     __tablename__ = 'inquiries'
@@ -14,3 +13,7 @@ class Inquiry(db.Model):
     status = db.Column(db.Enum('pending', 'responded', 'closed', name='inquiry_status'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # relationships:
+    client = relationship('User', backref='inquiries', foreign_keys=[client_id])
+    property = relationship('Property', backref='inquiries', foreign_keys=[property_id])

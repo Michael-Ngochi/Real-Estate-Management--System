@@ -1,8 +1,9 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from .user import User,db
 
-db = SQLAlchemy()
+
 
 class ViewingRequest(db.Model):
     __tablename__ = 'viewing_requests'
