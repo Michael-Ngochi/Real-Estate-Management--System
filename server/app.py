@@ -28,8 +28,12 @@ def create_app():
     
     app.config.from_object(Config)
 
-    CORS(app, resources={r"/*": {"origins": ["https://nyumbasmart.onrender.com"]}}, supports_credentials=True)
-
+    CORS(app, resources={r"/*": {"origins": [
+    "http://localhost:5173",
+    "https://real-estate-management-system-bycp.onrender.com"
+     ]}}, supports_credentials=True)
+    
+    
     db.init_app(app)
     bcrypt.init_app(app)
     jwt = JWTManager(app)
