@@ -1,4 +1,4 @@
-
+import api from '../../api/axiosConfig';
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import PropertyCard from '../../properties/PropertyCard';
@@ -15,14 +15,14 @@ const LandingPage = () => {
 
   useEffect(() => {
   fetchProperties();
-  axios.get("http://127.0.0.1:5000/properties/counties")
+  api.get("/properties/counties")
     .then(res => setCounties(res.data))
     .catch(err => console.error("Failed to load counties", err));
 }, []);
 
   const fetchProperties = async () => {
     try {
-      let url = 'http://127.0.0.1:5000/properties';
+      let url = '/properties';
       const params = [];
       if (county) params.push(`county=${county}`);
       if (type) params.push(`type=${type}`);
@@ -30,7 +30,7 @@ const LandingPage = () => {
       if (maxPrice) params.push(`max_price=${maxPrice}`);
       if (params.length) url += '?' + params.join('&');
 
-      const res = await axios.get(url);
+      const res = await api.get(url);
       setProperties(res.data || []);
     } catch (err) {
       console.error(err);
