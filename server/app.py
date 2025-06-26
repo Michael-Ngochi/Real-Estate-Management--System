@@ -47,7 +47,13 @@ def create_app():
     app.register_blueprint(viewing_bp)
     app.register_blueprint(application_bp)
     
-
+    @app.route("/run-seed2")
+    def run_seed2():
+        try:
+            import seed2 
+            return {"message": "✅ seed_extra.py executed successfully"}
+        except Exception as e:
+            return {"error": str(e)}, 500
 
     return app
 
