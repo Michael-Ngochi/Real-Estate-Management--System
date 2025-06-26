@@ -8,9 +8,9 @@ application_bp = Blueprint('application', __name__, url_prefix='/applications')
 @jwt_required()
 def submit_application():
     data = request.json
-    identity = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     application = Application(
-        client_id=identity['id'],
+        client_id=user_id,
         property_id=data['property_id'],
         application_type=data['application_type'],
         message=data['message'],
@@ -19,3 +19,18 @@ def submit_application():
     db.session.add(application)
     db.session.commit()
     return jsonify({'message': 'Application submitted'}), 201
+
+
+@application_bp.route('/my', methods=['GET'])
+@jwt_required()
+def get_my_applications():
+    user_id = int(get_jwt_identity())
+    applications = Application.query.filter_by(client_id=user_id).all()
+    return jsonify([{
+        'id': app.id,
+        'property_id': app.property_id,
+        'application_type': app.application_type,
+        'message': app.message,
+        'status': app.status,
+        'created_at': app.created_at.isoformat()
+    } for app in applications])

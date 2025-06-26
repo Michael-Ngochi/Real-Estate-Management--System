@@ -42,6 +42,14 @@ def list_properties():
         'agent_id': p.agent_id
     } for p in properties])
 
+
+@property_bp.route("/counties", methods=["GET"])
+def get_counties():
+    counties = db.session.query(Property.county).distinct().all()
+    return jsonify([c[0] for c in counties])
+
+
+
 @property_bp.route('/<int:id>', methods=['GET'])
 def get_property(id):
     prop = Property.query.get_or_404(id)
@@ -61,7 +69,30 @@ def get_property(id):
         'status': prop.status,
         'agent_id': prop.agent_id
     })
+    
+    
+@property_bp.route('/my', methods=['GET'])
+@jwt_required()
+def get_my_properties():
+    user_id = int(get_jwt_identity())
 
+    props = Property.query.filter_by(agent_id=user_id).all()
+
+    return jsonify([{
+        'id': p.id,
+        'title': p.title,
+        'location': p.location,
+        'county': p.county,
+        'town': p.town,
+        'geo_coordinates': p.geo_coordinates,
+        'price': float(p.price),
+        'property_type': p.property_type,
+        'bedrooms': p.bedrooms,
+        'bathrooms': p.bathrooms,
+        'area': p.area,
+        'status': p.status,
+        'agent_id': p.agent_id
+    } for p in props])
 
 @property_bp.route('/', methods=['POST'])
 @jwt_required()

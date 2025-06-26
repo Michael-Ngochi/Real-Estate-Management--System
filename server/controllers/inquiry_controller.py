@@ -36,10 +36,15 @@ def my_inquiries():
     else:
         return jsonify({'error': 'Unauthorized role'}), 403
 
-    return jsonify([{
-        'id': i.id,
-        'property_id': i.property_id,
-        'message': i.message,
-        'status': i.status,
-        'created_at': i.created_at.isoformat()
-    } for i in inquiries])
+    return jsonify([
+        {
+            'id': i.id,
+            'property_id': i.property_id,
+            'message': i.message,
+            'status': i.status,
+            'created_at': i.created_at.isoformat(),
+            'client_name': i.client.name if user.role == 'agent' else None,
+            'property_title': i.property.title  # Optional extra
+        }
+        for i in inquiries
+    ])
