@@ -1,3 +1,4 @@
+import api from '../../api/axiosConfig';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import { Card, Button, Row, Col } from 'react-bootstrap';
@@ -21,9 +22,9 @@ const AgentDashboard = () => {
       console.log("Using token:", token); // 🔍 Log token
 
       const [propRes, inqRes, viewRes] = await Promise.all([
-        axios.get('http://127.0.0.1:5000/properties/my', { headers }),
-        axios.get('http://127.0.0.1:5000/inquiries/my', { headers }),
-        axios.get('http://127.0.0.1:5000/viewings/my', { headers })
+        api.get('/properties/my', { headers }),
+        api.get('/inquiries/my', { headers }),
+        api.get('/viewings/my', { headers })
       ]);
 
       console.log("Properties response:", propRes.data); // 🔍
