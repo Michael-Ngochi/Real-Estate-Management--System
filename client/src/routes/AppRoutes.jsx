@@ -1,71 +1,54 @@
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LandingPage from '../components/landing/LandingPage';
 import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
-import ClientDashboard from '../components/dashboards/ClientDashboard';
-import AgentDashboard from '../components/dashboards/AgentDashboard';
-import AdminDashboard from '../components/dashboards/AdminDashboard';
 import ProtectedRoute from '../components/ProtectedRoute';
-
-// Placeholder pages 
-// import SavedProperties from '../components/client/SavedProperties';
-// import ClientInquiries from '../components/client/ClientInquiries';
-// import ClientApplications from '../components/client/ClientApplications';
-// import AllProperties from '../components/shared/AllProperties';
-// import NotificationsPage from '../components/shared/NotificationsPage';
-// import UserProfile from '../components/shared/UserProfile';
+import DashboardLayout from '../components/layout/DashboardLayout';
+import DashboardRouter from '../components/dashboards/DashboardRouter';
+import AllProperties from '../components/common/AllProperties';
+import PropertyDetails from '../components/common/PropertyDetails';
+import AddPropertyForm from '../components/properties/AddPropertyForm';
+import EditPropertyForm from '../components/properties/EditPropertyForm';
+// import other components as needed
 
 const AppRoutes = () => {
-  const location = useLocation();
-  const isDashboard = location.pathname.includes('dashboard');
-
   return (
     <Routes>
-      {/* Public Pages */}
+      {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
+      <Route path="/properties/:id" element={<PropertyDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Dashboards */}
+      {/* Protected Dashboard Routes */}
       <Route
-        path="/client-dashboard"
-        element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>}
-      />
-      <Route
-        path="/agent-dashboard"
-        element={<ProtectedRoute role="agent"><AgentDashboard /></ProtectedRoute>}
-      />
-      <Route
-        path="/admin-dashboard"
-        element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>}
-      />
-
-      {/* Sidebar Routes */}
-      {/* <Route
-        path="/saved"
-        element={<ProtectedRoute role="client"><SavedProperties /></ProtectedRoute>}
-      /> */}
-      {/* <Route
-        path="/inquiries"
-        element={<ProtectedRoute role="client"><ClientInquiries /></ProtectedRoute>}
-      /> */}
-      {/* <Route
-        path="/applications"
-        element={<ProtectedRoute role="client"><ClientApplications /></ProtectedRoute>}
-      /> */}
-      {/* <Route
-        path="/properties"
-        element={<ProtectedRoute><AllProperties /></ProtectedRoute>}
-      /> */}
-      {/* <Route
-        path="/notifications"
-        element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>}
-      /> */}
-      {/* <Route
-        path="/profile"
-        element={<ProtectedRoute><UserProfile /></ProtectedRoute>}
-      /> */}
+        path="/dashboard/*"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        {/* Dashboard index = role-specific home */}
+        <Route index element={<DashboardRouter />} />
+        <Route
+        path="properties/new"
+        element={<ProtectedRoute role="agent"><AddPropertyForm /></ProtectedRoute>}
+        />
+        <Route
+          path="properties/edit/:id"
+          element={<ProtectedRoute role="agent"><EditPropertyForm /></ProtectedRoute>}
+        />
+          {/* Sidebar-linked sub-pages */}
+        <Route path="properties" element={<AllProperties />} />
+        <Route path="properties/:id" element={<PropertyDetails />} />
+        {/* <Route path="saved" element={<SavedProperties />} /> */}
+        {/* <Route path="inquiries" element={<ClientInquiries />} /> */}
+        {/* <Route path="applications" element={<ClientApplications />} /> */}
+        {/* <Route path="notifications" element={<NotificationsPage />} /> */}
+        {/* <Route path="profile" element={<UserProfile />} /> */}
+      </Route>
     </Routes>
   );
 };

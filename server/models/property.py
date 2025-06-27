@@ -20,5 +20,8 @@ class Property(db.Model):
     area = db.Column(db.Float)
     status = db.Column(db.Enum('available', 'under_offer', 'sold', 'rented', name='property_status'), nullable=False)
     agent_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    agent = db.relationship('User', backref='properties', lazy=True) 
+    media = db.relationship('PropertyMedia', backref='property', lazy=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    

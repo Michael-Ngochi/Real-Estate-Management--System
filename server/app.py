@@ -33,7 +33,8 @@ def create_app():
     "https://real-estate-management-system-bycp.onrender.com"
      ]}}, supports_credentials=True)
     
-    
+    app.url_map.strict_slashes = False
+
     db.init_app(app)
     bcrypt.init_app(app)
     jwt = JWTManager(app)
@@ -47,13 +48,13 @@ def create_app():
     app.register_blueprint(viewing_bp)
     app.register_blueprint(application_bp)
     
-    @app.route("/run-seed2")
-    def run_seed2():
-        try:
-            import seed2 
-            return {"message": "✅ seed_extra.py executed successfully"}
-        except Exception as e:
-            return {"error": str(e)}, 500
+    # @app.route("/run-seed2")
+    # def run_seed2():
+    #     try:
+    #         import seed2 
+    #         return {"message": "seed_extra.py executed successfully"}
+    #     except Exception as e:
+    #         return {"error": str(e)}, 500
 
     return app
 

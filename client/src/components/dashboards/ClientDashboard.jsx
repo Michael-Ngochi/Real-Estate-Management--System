@@ -46,7 +46,7 @@ const ClientDashboard = () => {
   }, [token]);
 
   return (
-    <DashboardLayout>
+    <>
       <section className="mb-4">
         <div className="bg-success text-white p-4 rounded shadow-sm">
           <h4 className="mb-1">Welcome, {user?.name} </h4>
@@ -111,7 +111,7 @@ const ClientDashboard = () => {
           </ul>
         </Col>
       </Row>
-    </DashboardLayout>
+    </>
   );
 };
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Container } from 'react-bootstrap';
 import axios from 'axios';
-import { useAuthStore } from '../../store/authStore'; 
+import { useAuthStore } from '../../store/authStore';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -29,10 +29,8 @@ const Login = () => {
 
       setUser(meRes.data);
 
-      if (meRes.data.role === 'admin') navigate('/admin-dashboard');
-      else if (meRes.data.role === 'agent') navigate('/agent-dashboard');
-      else navigate('/client-dashboard');
-
+      // All roles go to /dashboard now
+      navigate('/dashboard');
 
     } catch (err) {
       const msg = err.response?.data?.error || "Login failed. Please check your credentials.";
