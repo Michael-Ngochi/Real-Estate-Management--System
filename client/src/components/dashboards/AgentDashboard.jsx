@@ -1,4 +1,5 @@
 import api from '../../api/axiosConfig';
+import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import { Card, Button, Row, Col } from 'react-bootstrap';
@@ -54,18 +55,20 @@ const AgentDashboard = () => {
 }, [token]);
 
   return (
-    <DashboardLayout>
-      <section className="mb-4">
-        <div className="bg-success text-white p-4 rounded shadow-sm d-flex justify-content-between align-items-center">
-          <div>
-            <h4 className="mb-1">Welcome back!</h4>
-            <p className="mb-0">Manage your properties and respond to clients efficiently.</p>
-          </div>
-          <Button variant="light" className="text-success fw-bold">
-            + Add New Property
-          </Button>
-        </div>
-      </section>
+<>
+<section className="mb-4">
+  <div className="bg-success text-white p-4 rounded shadow-sm d-flex justify-content-between align-items-center">
+    <div>
+      <h4 className="mb-1">Welcome back!</h4>
+      <p className="mb-0">Manage your properties and respond to clients efficiently.</p>
+    </div>
+    <Link to="/dashboard/properties/new">
+      <Button variant="light" className="text-success fw-bold">
+        + Add New Property
+      </Button>
+    </Link>
+  </div>
+</section>
 
       <Row className="mb-4">
         <Col md={4}>
@@ -101,7 +104,10 @@ const AgentDashboard = () => {
             {recentInquiries.length > 0 ? (
               recentInquiries.map((inq, index) => (
                 <li key={index} className="list-group-item">
-                  <strong>{inq.client_name || 'Client'}</strong>: {inq.message}
+                <strong>{inq.property_title}</strong>
+                  <br/>
+                 <strong>{inq.client_name || 'Client'}</strong>: {inq.message}
+
                 </li>
               ))
             ) : (
@@ -111,21 +117,25 @@ const AgentDashboard = () => {
         </Col>
         <Col md={6}>
           <h5 className="mb-3 fw-semibold">Upcoming Viewings</h5>
-          <ul className="list-group shadow-sm">
-            {recentViewings.length > 0 ? (
-              recentViewings.map((view, index) => (
-                <li key={index} className="list-group-item">
-                  <strong>{view.client_name || 'Client'}</strong> –{' '}
-                  {new Date(view.scheduled_at).toLocaleString()}
-                </li>
-              ))
-            ) : (
-              <li className="list-group-item text-muted">No scheduled viewings</li>
-            )}
-          </ul>
+            <ul className="list-group shadow-sm">
+              {recentViewings.length > 0 ? (
+                recentViewings.map((view, index) => (
+                  <li key={index} className="list-group-item">
+                    <strong>{view.client_name || 'Client'}</strong> –{' '}
+                    {new Date(view.scheduled_at).toLocaleString()}
+                    <br />
+                    <span className="text-muted">
+                      {view.property?.title} – {view.property?.location}
+                    </span>
+                  </li>
+                ))
+              ) : (
+                <li className="list-group-item text-muted">No scheduled viewings</li>
+              )}
+            </ul>
         </Col>
       </Row>
-    </DashboardLayout>
+    </>
   );
 };
 

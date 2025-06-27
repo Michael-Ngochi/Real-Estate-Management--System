@@ -26,3 +26,30 @@ def upload_media():
     db.session.add(media)
     db.session.commit()
     return jsonify({'message': 'Media uploaded'}), 201
+
+@media_bp.route('/add', methods=['POST'])
+@jwt_required()
+def upload_or_replace_media():
+    data = request.json
+    property_id = data['property_id']
+    media_type = data['media_type']
+    media_url = data['media_url']
+
+    # Check if media of the same type already exists for this property
+    existing = PropertyMedia.query.filter_by(property_id=property_id, media_type=media_type).first()
+
+    if existing:
+        existing.media_url = media_url  # Replace the URL
+        message = 'Media updated'
+    else:
+        new_media = PropertyMedia(
+            property_id=property_id,
+            media_type=media_type,
+            media_url=media_url
+        )
+        db.session.add(new_media)
+        message = 'Media uploaded'
+
+    db.session.commit()
+    return jsonify({'message': message}), 200
+

@@ -31,7 +31,7 @@ def my_viewings():
 
     if user.role == 'client':
         # Client: get viewings they requested
-        viewings = ViewingRequest.query.filter_by(client_id=user_id).all()
+        viewings = ViewingRequest.query.filter_by(client_id=user_id).join(Property).all()
 
     elif user.role == 'agent':
         # Agent: get viewings scheduled for their listed properties
@@ -45,7 +45,12 @@ def my_viewings():
         'property_id': v.property_id,
         'scheduled_at': v.scheduled_at.isoformat(),
         'status': v.status,
-        'notes': v.notes
+        'notes': v.notes,
+        'client_name': v.client.name if user.role == 'agent' else None,
+        'property': {
+            'title': v.property.title,
+            'location': v.property.location
+        } if v.property else None
     } for v in viewings])
 
 @viewing_bp.route('/<int:id>', methods=['PATCH'])
