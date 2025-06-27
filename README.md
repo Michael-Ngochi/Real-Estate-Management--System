@@ -1,6 +1,6 @@
 # NyumbaSmart – Full Stack Real Estate Platform
 
-NyumbaSmart is a full-featured real estate web application built for the Kenyan market. It enables clients to browse and apply for properties, while agents manage listings, media, inquiries, and more.
+NyumbaSmart is a full-featured real estate web application. It enables clients to browse and apply for properties, while agents manage listings, media, inquiries, and more.
 
 ---
 
