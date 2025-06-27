@@ -121,6 +121,8 @@ npm run dev
 - **Backend**: Flask API hosted on Render  
   → URL: `https://nyumbasmart.onrender.com`
 
+  > ⚠️ **Note**: ***The deployed backend may take a few seconds to spin up if it has been inactive. Please be patient when accessing the site for the first time.***
+
 - **Database**: PostgreSQL (connected via Render’s managed services)
 
 
