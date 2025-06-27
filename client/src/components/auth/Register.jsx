@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Container, Alert } from 'react-bootstrap';
-import api from '../../api/axiosConfig'; // use your configured axios instance
+import api from '../../api/axiosConfig';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -9,7 +9,8 @@ const Register = () => {
     email: '',
     phone: '',
     password: '',
-    role: 'client'
+    confirmPassword: '',
+    role: 'client',
   });
 
   const [error, setError] = useState('');
@@ -23,7 +24,14 @@ const Register = () => {
     e.preventDefault();
     setError('');
 
-    api.post('/auth/register', form)
+    if (form.password !== form.confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    const { confirmPassword, ...payload } = form; // exclude confirmPassword from request
+
+    api.post('/auth/register', payload)
       .then(() => {
         alert('Registration successful!');
         navigate('/login');
@@ -83,6 +91,18 @@ const Register = () => {
             name="password"
             placeholder="Password"
             value={form.password}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={form.confirmPassword}
             onChange={handleChange}
             required
           />
