@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Form, Container } from 'react-bootstrap';
+import { Button, Form, Container, Alert } from 'react-bootstrap';
+import api from '../../api/axiosConfig'; // use your configured axios instance
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -12,6 +12,7 @@ const Register = () => {
     role: 'client'
   });
 
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,14 +21,24 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Placeholder registration logic
-    console.log(form);
-    navigate('/login');
+    setError('');
+
+    api.post('/auth/register', form)
+      .then(() => {
+        alert('Registration successful!');
+        navigate('/login');
+      })
+      .catch((err) => {
+        const msg = err.response?.data?.error || 'Registration failed. Please try again.';
+        setError(msg);
+      });
   };
 
   return (
     <Container className="my-5" style={{ maxWidth: '500px' }}>
       <h3 className="text-center mb-4 text-success">Create Your Account</h3>
+      {error && <Alert variant="danger">{error}</Alert>}
+
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Full Name</Form.Label>
